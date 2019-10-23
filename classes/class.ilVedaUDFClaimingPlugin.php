@@ -56,6 +56,17 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	 */
 	public const FIELD_MEMBER_ID = 'member_id';
 
+	/**
+	 * @var string
+	 */
+	public const FIELD_TUTOR_ID = 'tutor_id';
+
+	/**
+	 * @var string
+	 */
+	public const FIELD_COMPANION_ID = 'companion_id';
+
+
 
 
 	/**
@@ -136,6 +147,51 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	public function checkPermission($a_user_id, $a_context_type, $a_context_id, $a_action_id, $a_action_sub_id)
 	{
 		return true;
+	}
+
+
+	/**
+	 * @param string|null $tutor_oid
+	 * @return int[]
+	 */
+	public function getUsersForTutorId(?string $tutor_oid)
+	{
+		global $DIC;
+
+		$db = $DIC->database();
+
+		$query = 'select usr_id from udf_text ' .
+			'where field_id = ' . $db->quote($this->fields[\ilVedaUDFClaimingPlugin::FIELD_TUTOR_ID], \ilDBConstants::T_INTEGER). ' ' .
+			'and value = ' . $db->quote($tutor_oid, \ilDBConstants::T_TEXT);
+		$res = $db->query($query);
+
+		$user_ids = [];
+		while($row = $res->fetchRow(\ilDBConstants::FETCHMODE_OBJECT)) {
+			$user_ids[] = $row->usr_id;
+		}
+		return $user_ids;
+	}
+
+	/**
+	 * @param string|null $tutor_oid
+	 * @return int[]
+	 */
+	public function getUsersForCompanionId(?string $companion_oid)
+	{
+		global $DIC;
+
+		$db = $DIC->database();
+
+		$query = 'select usr_id from udf_text ' .
+			'where field_id = ' . $db->quote($this->fields[\ilVedaUDFClaimingPlugin::FIELD_COMPANION_ID], \ilDBConstants::T_INTEGER). ' ' .
+			'and value = ' . $db->quote($companion_oid, \ilDBConstants::T_TEXT);
+		$res = $db->query($query);
+
+		$user_ids = [];
+		while($row = $res->fetchRow(\ilDBConstants::FETCHMODE_OBJECT)) {
+			$user_ids[] = $row->usr_id;
+		}
+		return $user_ids;
 	}
 }
 ?>
