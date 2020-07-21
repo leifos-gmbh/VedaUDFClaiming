@@ -8,11 +8,8 @@
 class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 {
 	public const UD_FIELD_TYPE_TEXT = 1;
-	public const UD_FIELD_TYPE_DROPDOWN = 2;
-	public const UD_FIELD_TYPE_WYSIWYG = 3;
 
-
-	/**
+    /**
 	 * @var null | \ilVedaUDFClaimingPlugin
 	 */
 	private static $instance = null;
@@ -118,7 +115,7 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	/**
 	 * @return array
 	 */
-	public function getFields()
+	public function getFields() : array
 	{
 		return $this->fields;
 	}
@@ -129,7 +126,7 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	/**
 	 * @inheritdoc
 	 */
-	public function getPluginName()
+	public function getPluginName() : string
 	{
 		return self::PLUGIN_NAME;
 	}
@@ -144,7 +141,7 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	 * @param int $a_action_sub_id
 	 * @return bool
 	 */
-	public function checkPermission($a_user_id, $a_context_type, $a_context_id, $a_action_id, $a_action_sub_id)
+	public function checkPermission($a_user_id, $a_context_type, $a_context_id, $a_action_id, $a_action_sub_id) :bool
 	{
 		return true;
 	}
@@ -154,7 +151,7 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	 * @param string|null $tutor_oid
 	 * @return int[]
 	 */
-	public function getUsersForTutorId(?string $tutor_oid)
+	public function getUsersForTutorId(?string $tutor_oid) : array
 	{
 		global $DIC;
 
@@ -176,7 +173,7 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	 * @param string|null $tutor_oid
 	 * @return int[]
 	 */
-	public function getUsersForCompanionId(?string $companion_oid)
+	public function getUsersForCompanionId(?string $companion_oid) : array
 	{
 		global $DIC;
 
