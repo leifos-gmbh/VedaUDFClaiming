@@ -110,3 +110,28 @@ $new_id = \ilVedaUDFClaimingPlugin::createDBField(
 $map[\ilVedaUDFClaimingPlugin::FIELD_COMPANION_ID] = $new_id;
 $set->set(\ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize($map));
 ?>
+<#3>
+<?php
+$set = new \ilSetting(\ilVedaUDFClaimingPlugin::SETTINGS_MODULE);
+$map = unserialize($set->get(\ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize([])));
+
+$new_id = \ilVedaUDFClaimingPlugin::createDBField(
+    \ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
+    'Aufsichtsperson-ID',
+    [
+        'registration_visible' => 0,
+        'export'               => 0,
+        'visible'              => 1,
+        'changeable'           => 0,
+        'searchable'           => 0,
+        'required'             => 0,
+        'course_export'        => 0,
+        'group_export'         => 0,
+        'changeable_lua'       => 0,
+        'visible_lua'          => 0
+    ],
+    []
+);
+$map[\ilVedaUDFClaimingPlugin::FIELD_SUPERVISOR_ID] = $new_id;
+$set->set(\ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize($map));
+?>

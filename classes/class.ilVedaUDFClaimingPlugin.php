@@ -63,6 +63,11 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	 */
 	public const FIELD_COMPANION_ID = 'companion_id';
 
+    /**
+     * @var string
+     */
+	public const FIELD_SUPERVISOR_ID = 'supervisor_id';
+
 
 
 
@@ -190,5 +195,23 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 		}
 		return $user_ids;
 	}
+
+    public function getUsersForSupervisorId(?string $supervisor_oid) : array
+    {
+        global $DIC;
+
+        $db = $DIC->database();
+
+        $query = 'select usr_id from udf_text ' .
+            'where field_id = ' . $db->quote($this->fields[\ilVedaUDFClaimingPlugin::FIELD_SUPERVISOR_ID], \ilDBConstants::T_INTEGER). ' ' .
+            'and value = ' . $db->quote($supervisor_oid, \ilDBConstants::T_TEXT);
+        $res = $db->query($query);
+
+        $user_ids = [];
+        while($row = $res->fetchRow(\ilDBConstants::FETCHMODE_OBJECT)) {
+            $user_ids[] = $row->usr_id;
+        }
+        return $user_ids;
+    }
 }
 ?>
