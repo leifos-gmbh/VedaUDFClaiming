@@ -14,6 +14,6 @@ ILIAS user plugin. Provides custom user data fields, required for https://github
     
 - Clone the plugin repository as follows:
      
-      git clone https://github.com/leifos-gmbh/VedaUDFClaiming.git
+      git clone -b 7 https://github.com/leifos-gmbh/VedaUDFClaiming.git
 
 - Install and Activate it in the ILIAS Administration - Plugins.
