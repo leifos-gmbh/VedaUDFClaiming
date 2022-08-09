@@ -1,5 +1,6 @@
 # VedaUDFClaiming
 ILIAS user plugin. Provides custom user data fields, required for https://github.com/leifos-gmbh/VedaConnector
+
 **Minimum ILIAS Version:**
 7.12   
 
