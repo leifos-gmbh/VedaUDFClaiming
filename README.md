@@ -2,10 +2,10 @@
 ILIAS user plugin. Provides custom user data fields, required for https://github.com/leifos-gmbh/VedaConnector
 
 **Minimum ILIAS Version:**
-7.12   
+8.8   
 
 **Maximum ILIAS Version:**
-7.99
+8.99
 
 ### Quick Installation Guide
 - Inside the directory:
@@ -14,6 +14,6 @@ ILIAS user plugin. Provides custom user data fields, required for https://github
     
 - Clone the plugin repository as follows:
      
-      git clone -b 7 https://github.com/leifos-gmbh/VedaUDFClaiming.git
+      git clone -b 8 https://github.com/leifos-gmbh/VedaUDFClaiming.git
 
 - Install and Activate it in the ILIAS Administration - Plugins.

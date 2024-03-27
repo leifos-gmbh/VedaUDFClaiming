@@ -9,10 +9,7 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 {
 	public const UD_FIELD_TYPE_TEXT = 1;
 
-    /**
-	 * @var null | \ilVedaUDFClaimingPlugin
-	 */
-	private static $instance = null;
+	private static ?ilUDFClaimingPlugin $instance = null;
 
 	/**
 	 * @var string
@@ -69,47 +66,40 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	public const FIELD_SUPERVISOR_ID = 'supervisor_id';
 
 
-
-
-	/**
-	 * @var null | \ilLogger
-	 */
-	private $logger = null;
+	private ?ilLogger $logger = null;
 
 	/**
 	 * @var null | \ilSetting
 	 */
-	private $settings = null;
+	private ?ilSetting $settings = null;
 
 
 	/**
 	 * @var array
 	 */
-	private $fields = [];
+	private array $fields = [];
 
 
 
-	/**
-	 * @return \ilVedaMDClaimingPlugin
-	 */
-	public static function getInstance() : \ilVedaMDClaimingPlugin
+	public static function getInstance() : \ilVedaUDFClaimingPlugin
 	{
-		if(!self::$instance instanceof \ilVedaUDFClaimingPlugin) {
-			self::$instance = \ilPluginAdmin::getPluginObject(
-				IL_COMP_SERVICE,
-				'User',
-				'udfc',
-				self::PLUGIN_NAME
-			);
-		}
-		return self::$instance;
+        global $DIC;
+
+        if (self::$instance instanceof self) {
+            return self::$instance;
+        }
+        return self::$instance = new self(
+            $DIC->database(),
+            $DIC["component.repository"],
+            self::PLUGIN_ID
+        );
 	}
 
 
 	/**
 	 * init plugin (records and fields)
 	 */
-	public function init()
+	public function init(): void
 	{
 		$this->settings = new \ilSetting(self::SETTINGS_MODULE);
 		$this->fields = unserialize($this->settings->get(self::SETTINGS_FIELD_IDS, serialize([])));
@@ -117,9 +107,6 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 	}
 
 
-	/**
-	 * @return array
-	 */
 	public function getFields() : array
 	{
 		return $this->fields;
@@ -128,9 +115,6 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 
 
 
-	/**
-	 * @inheritdoc
-	 */
 	public function getPluginName() : string
 	{
 		return self::PLUGIN_NAME;
