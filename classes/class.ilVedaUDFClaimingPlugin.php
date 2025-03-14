@@ -1,7 +1,8 @@
 <?php
+
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-include_once "Services/User/classes/class.ilUserDefinedFields.php";
+declare(strict_types=1);
 
 /**
  * Class ilVedaUDFClaiming
@@ -9,82 +10,36 @@ include_once "Services/User/classes/class.ilUserDefinedFields.php";
  */
 class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
 {
-	public const UD_FIELD_TYPE_TEXT = 1;
+    /** @var int */
+    public const UD_FIELD_TYPE_TEXT = 1;
 
-	private static ?ilUDFClaimingPlugin $instance = null;
+    /** @var string */
+    public const PLUGIN_ID = 'vedaudfclaiming';
 
-	/**
-	 * @var string
-	 */
-	public const PLUGIN_ID = 'vedaudfclaiming';
+    /** @var string */
+    public const PLUGIN_NAME = 'VedaUDFClaiming';
 
+    /** @var string */
+    public const SETTINGS_MODULE = 'vedaudfclaiming';
 
-	/**
-	 * @var string
-	 */
-	public const PLUGIN_NAME = 'VedaUDFClaiming';
+    /** @var string */
+    public const SETTINGS_FIELD_IDS = 'fields';
 
+    protected ilLogger $logger;
+    protected ilSetting $settings;
+    protected array $fields;
+    protected static ?ilUDFClaimingPlugin $instance = null;
 
-	/**
-	 * @var string
-	 */
-	public const SETTINGS_MODULE = 'vedaudfclaiming';
+    public function __construct(ilDBInterface $db, ilComponentRepositoryWrite $component_repository, string $id)
+    {
+        parent::__construct($db, $component_repository, $id);
+        $this->settings = new ilSetting(self::SETTINGS_MODULE);
+        $this->fields = unserialize($this->settings->get(self::SETTINGS_FIELD_IDS, serialize([])));
+        $this->logger = ilLoggerFactory::getLogger(self::PLUGIN_ID);
+    }
 
-
-	/**
-	 * @var string
-	 */
-	public const SETTINGS_FIELD_IDS = 'fields';
-
-
-	/**
-	 * @var string
-	 */
-	public const FIELD_SUPERVISOR = 'supervisor';
-
-	/**
-	 * @var string
-	 */
-	public const FIELD_SUPERVISOR_EMAIL = 'supervisor_mail';
-
-	/**
-	 * @var string
-	 */
-	public const FIELD_MEMBER_ID = 'member_id';
-
-	/**
-	 * @var string
-	 */
-	public const FIELD_TUTOR_ID = 'tutor_id';
-
-	/**
-	 * @var string
-	 */
-	public const FIELD_COMPANION_ID = 'companion_id';
-
-    /**
-     * @var string
-     */
-	public const FIELD_SUPERVISOR_ID = 'supervisor_id';
-
-
-	private ?ilLogger $logger = null;
-
-	/**
-	 * @var null | \ilSetting
-	 */
-	private ?ilSetting $settings = null;
-
-
-	/**
-	 * @var array
-	 */
-	private array $fields = [];
-
-
-
-	public static function getInstance() : \ilVedaUDFClaimingPlugin
-	{
+    public static function getInstance(): \ilVedaUDFClaimingPlugin
+    {
         global $DIC;
 
         if (self::$instance instanceof self) {
@@ -95,109 +50,67 @@ class ilVedaUDFClaimingPlugin extends \ilUDFClaimingPlugin
             $DIC["component.repository"],
             self::PLUGIN_ID
         );
-	}
+    }
 
-
-	/**
-	 * init plugin (records and fields)
-	 */
-	public function init(): void
-	{
-		$this->settings = new \ilSetting(self::SETTINGS_MODULE);
-		$this->fields = unserialize($this->settings->get(self::SETTINGS_FIELD_IDS, serialize([])));
-		$this->logger = \ilLoggerFactory::getLogger(self::PLUGIN_ID);
-	}
-
-
-	public function getFields() : array
-	{
-		return $this->fields;
-	}
-
-
-
-
-	public function getPluginName() : string
-	{
-		return self::PLUGIN_NAME;
-	}
-
-	/**
-	 * Check permission
-	 *
-	 * @param int $a_user_id
-	 * @param int $a_context_type
-	 * @param int $a_context_id
-	 * @param int $a_action_id
-	 * @param int $a_action_sub_id
-	 * @return bool
-	 */
-	public function checkPermission($a_user_id, $a_context_type, $a_context_id, $a_action_id, $a_action_sub_id) :bool
-	{
-		return true;
-	}
-
-
-	/**
-	 * @param string|null $tutor_oid
-	 * @return int[]
-	 */
-	public function getUsersForTutorId(?string $tutor_oid) : array
-	{
-		global $DIC;
-
-		$db = $DIC->database();
-
-		$query = 'select usr_id from udf_text ' .
-			'where field_id = ' . $db->quote($this->fields[\ilVedaUDFClaimingPlugin::FIELD_TUTOR_ID], \ilDBConstants::T_INTEGER). ' ' .
-			'and value = ' . $db->quote($tutor_oid, \ilDBConstants::T_TEXT);
-		$res = $db->query($query);
-
-		$user_ids = [];
-		while($row = $res->fetchRow(\ilDBConstants::FETCHMODE_OBJECT)) {
-			$user_ids[] = $row->usr_id;
-		}
-		return $user_ids;
-	}
-
-	/**
-	 * @param string|null $tutor_oid
-	 * @return int[]
-	 */
-	public function getUsersForCompanionId(?string $companion_oid) : array
-	{
-		global $DIC;
-
-		$db = $DIC->database();
-
-		$query = 'select usr_id from udf_text ' .
-			'where field_id = ' . $db->quote($this->fields[\ilVedaUDFClaimingPlugin::FIELD_COMPANION_ID], \ilDBConstants::T_INTEGER). ' ' .
-			'and value = ' . $db->quote($companion_oid, \ilDBConstants::T_TEXT);
-		$res = $db->query($query);
-
-		$user_ids = [];
-		while($row = $res->fetchRow(\ilDBConstants::FETCHMODE_OBJECT)) {
-			$user_ids[] = $row->usr_id;
-		}
-		return $user_ids;
-	}
-
-    public function getUsersForSupervisorId(?string $supervisor_oid) : array
+    public function getFields(): array
     {
-        global $DIC;
+        return $this->fields;
+    }
 
-        $db = $DIC->database();
+    public function getPluginName(): string
+    {
+        return self::PLUGIN_NAME;
+    }
 
+    public function checkPermission(
+        int $a_user_id,
+        int $a_context_type,
+        int $a_context_id,
+        int $a_action_id,
+        int $a_action_sub_id
+    ): bool {
+        return true;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getUsersForTutorId(?string $tutor_oid): array
+    {
+        return $this->getUserIdsForFieldAndOId($tutor_oid, VedaUDFClaimingFields::TUTOR_ID);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getUsersForCompanionId(?string $companion_oid): array
+    {
+        return $this->getUserIdsForFieldAndOId($companion_oid, VedaUDFClaimingFields::COMPANION_ID);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getUsersForSupervisorId(?string $supervisor_oid): array
+    {
+        return $this->getUserIdsForFieldAndOId($supervisor_oid, VedaUDFClaimingFields::SUPERVISOR_ID);
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getUserIdsForFieldAndOId(
+        ?string $oid,
+        VedaUDFClaimingFields $field
+    ): array {
         $query = 'select usr_id from udf_text ' .
-            'where field_id = ' . $db->quote($this->fields[\ilVedaUDFClaimingPlugin::FIELD_SUPERVISOR_ID], \ilDBConstants::T_INTEGER). ' ' .
-            'and value = ' . $db->quote($supervisor_oid, \ilDBConstants::T_TEXT);
-        $res = $db->query($query);
-
+            'where field_id = ' . $this->db->quote($this->fields[$field->value], ilDBConstants::T_INTEGER) . ' ' .
+            'and value = ' . $this->db->quote($oid, ilDBConstants::T_TEXT);
+        $res = $this->db->query($query);
         $user_ids = [];
-        while($row = $res->fetchRow(\ilDBConstants::FETCHMODE_OBJECT)) {
+        while ($row = $res->fetchRow(ilDBConstants::FETCHMODE_OBJECT)) {
             $user_ids[] = $row->usr_id;
         }
         return $user_ids;
     }
 }
-?>

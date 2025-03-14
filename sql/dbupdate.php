@@ -3,8 +3,8 @@
 
 $map = [];
 
-$new_id = \ilVedaUDFClaimingPlugin::createDBField(
-	\ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
+$new_id = ilVedaUDFClaimingPlugin::createDBField(
+	ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
 	'Aufsichtsperson',
 	[
 		'registration_visible' => 0,
@@ -21,10 +21,10 @@ $new_id = \ilVedaUDFClaimingPlugin::createDBField(
 	[]
 );
 
-$map[\ilVedaUDFClaimingPlugin::FIELD_SUPERVISOR] = $new_id;
+$map[VedaUDFClaimingFields::SUPERVISOR->value] = $new_id;
 
-$new_id = \ilVedaUDFClaimingPlugin::createDBField(
-	\ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
+$new_id = ilVedaUDFClaimingPlugin::createDBField(
+	ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
 	'Aufsichtsperson e-Mail',
 	[
 		'registration_visible' => 0,
@@ -41,10 +41,10 @@ $new_id = \ilVedaUDFClaimingPlugin::createDBField(
 	[]
 );
 
-$map[\ilVedaUDFClaimingPlugin::FIELD_SUPERVISOR_EMAIL] = $new_id;
+$map[VedaUDFClaimingFields::SUPERVISOR_EMAIL->value] = $new_id;
 
-$new_id = \ilVedaUDFClaimingPlugin::createDBField(
-	\ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
+$new_id = ilVedaUDFClaimingPlugin::createDBField(
+	ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
 	'Mitgliedsnummer',
 	[
 		'registration_visible' => 0,
@@ -61,18 +61,18 @@ $new_id = \ilVedaUDFClaimingPlugin::createDBField(
 	[]
 );
 
-$map[\ilVedaUDFClaimingPlugin::FIELD_MEMBER_ID] = $new_id;
+$map[\VedaUDFClaimingFields::MEMBER_ID->value] = $new_id;
 
-$set = new \ilSetting(\ilVedaUDFClaimingPlugin::SETTINGS_MODULE);
-$set->set(\ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize($map));
+$set = new ilSetting(ilVedaUDFClaimingPlugin::SETTINGS_MODULE);
+$set->set(ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize($map));
 ?>
 <#2>
 <?php
-$set = new \ilSetting(\ilVedaUDFClaimingPlugin::SETTINGS_MODULE);
-$map = unserialize($set->get(\ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize([])));
+$set = new ilSetting(ilVedaUDFClaimingPlugin::SETTINGS_MODULE);
+$map = unserialize($set->get(ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize([])));
 
-$new_id = \ilVedaUDFClaimingPlugin::createDBField(
-	\ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
+$new_id = ilVedaUDFClaimingPlugin::createDBField(
+	ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
 	'Dozenten-ID',
 	[
 		'registration_visible' => 0,
@@ -88,10 +88,10 @@ $new_id = \ilVedaUDFClaimingPlugin::createDBField(
 	],
 	[]
 );
-$map[\ilVedaUDFClaimingPlugin::FIELD_TUTOR_ID] = $new_id;
+$map[VedaUDFClaimingFields::TUTOR_ID->value] = $new_id;
 
-$new_id = \ilVedaUDFClaimingPlugin::createDBField(
-	\ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
+$new_id = ilVedaUDFClaimingPlugin::createDBField(
+	ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
 	'Lernbegleiter-ID',
 	[
 		'registration_visible' => 0,
@@ -107,16 +107,16 @@ $new_id = \ilVedaUDFClaimingPlugin::createDBField(
 	],
 	[]
 );
-$map[\ilVedaUDFClaimingPlugin::FIELD_COMPANION_ID] = $new_id;
-$set->set(\ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize($map));
+$map[VedaUDFClaimingFields::COMPANION_ID->value] = $new_id;
+$set->set(ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize($map));
 ?>
 <#3>
 <?php
-$set = new \ilSetting(\ilVedaUDFClaimingPlugin::SETTINGS_MODULE);
-$map = unserialize($set->get(\ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize([])));
+$set = new ilSetting(ilVedaUDFClaimingPlugin::SETTINGS_MODULE);
+$map = unserialize($set->get(ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize([])));
 
-$new_id = \ilVedaUDFClaimingPlugin::createDBField(
-    \ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
+$new_id = ilVedaUDFClaimingPlugin::createDBField(
+    ilVedaUDFClaimingPlugin::UD_FIELD_TYPE_TEXT,
     'Aufsichtsperson-ID',
     [
         'registration_visible' => 0,
@@ -132,6 +132,6 @@ $new_id = \ilVedaUDFClaimingPlugin::createDBField(
     ],
     []
 );
-$map[\ilVedaUDFClaimingPlugin::FIELD_SUPERVISOR_ID] = $new_id;
-$set->set(\ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize($map));
+$map[VedaUDFClaimingFields::SUPERVISOR_ID->value] = $new_id;
+$set->set(ilVedaUDFClaimingPlugin::SETTINGS_FIELD_IDS, serialize($map));
 ?>
