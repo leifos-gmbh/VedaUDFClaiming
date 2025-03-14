@@ -4,6 +4,8 @@
 
 declare(strict_types=1);
 
+include_once "Services/User/classes/class.ilUserDefinedFields.php";
+
 /**
  * Class ilVedaUDFClaiming
  * @author Stefan Meyer <smeyer.ilias@gmx.de>
