@@ -14,11 +14,11 @@ cd <ILIAS_ROOT>
 ```
 Create folder structure:
 ```shell
-mkdir -p Customizing/global/plugins/Services/User/UDFClaiming
+mkdir -p Customizing/global/plugins/Services/User
 ```
 Navigate to plugin directory:
 ```shell
-cd Customizing/global/plugins/Services/User/UDFClaiming
+cd Customizing/global/plugins/Services/User
 ```
 Clone plugin from github:
 ```shell
